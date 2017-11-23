@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="QM6PgonXYJcxneXbr_DBBmQL3DFet7tdEUIwcNAlBmQ" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="java,freemarker,word," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="最近工作室在招新，需要制作招新网站报名。所以，就去研究了一下怎么使用freemarker将数据库的数据导出成word报名表。">
+<meta name="keywords" content="java,freemarker,word">
+<meta property="og:type" content="article">
+<meta property="og:title" content="freemarker导出word文档">
+<meta property="og:url" content="http://yoursite.com/2016/03/20/freemaker导出word文档/index.html">
+<meta property="og:site_name" content="FranksZhang&#39;s blog">
+<meta property="og:description" content="最近工作室在招新，需要制作招新网站报名。所以，就去研究了一下怎么使用freemarker将数据库的数据导出成word报名表。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://frankszhang.github.io/images/freemarker/freemarker01.png">
+<meta property="og:image" content="https://frankszhang.github.io/images/freemarker/freemarker02.png">
+<meta property="og:image" content="https://frankszhang.github.io/images/freemarker/freemarker03.png">
+<meta property="og:updated_time" content="2016-10-06T15:25:27.269Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="freemarker导出word文档">
+<meta name="twitter:description" content="最近工作室在招新，需要制作招新网站报名。所以，就去研究了一下怎么使用freemarker将数据库的数据导出成word报名表。">
+<meta name="twitter:image" content="https://frankszhang.github.io/images/freemarker/freemarker01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/03/20/freemaker导出word文档/"/>
+
+
+
+
+
+  <title>freemarker导出word文档 | FranksZhang's blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3da53143b83d85d395588fa3265e91c8";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">FranksZhang's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/20/freemaker导出word文档/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="FranksZhang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FranksZhang's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">freemarker导出word文档</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-20T16:39:59+08:00">
+                2016-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/freemarker/" itemprop="url" rel="index">
+                    <span itemprop="name">freemarker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近工作室在招新，需要制作招新网站报名。所以，就去研究了一下怎么使用freemarker将数据库的数据导出成word报名表。<br><a id="more"></a></p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>先下载freemarker的jar包，可通过如下链接获取freemarker的最新版本。<br><a href="https://freemarker.org/freemarkerdownload.html" target="_blank" rel="external">https://freemarker.org/freemarkerdownload.html</a></p>
+<h2 id="制作模板"><a href="#制作模板" class="headerlink" title="制作模板"></a>制作模板</h2><p>首先先用word做一个你要导出文档的模板，如下图。</p>
+<p><img src="https://frankszhang.github.io/images/freemarker/freemarker01.png" alt="word-model00"></p>
+<p>在需要导出数据的部分对应放上${}占位符，里面填上的名字需与下面实现代码中的字段保持一致。接下来会说到。<br>将文档做好之后，另存为XML文件。<br>看看占位符与变量（如${name})会不会被意外分开，修改一下就OK啦。<br><img src="https://frankszhang.github.io/images/freemarker/freemarker02.png" alt="word-model01"><br>修改后将其另存为template.ftl模板文件。</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>下面用servlet实现的代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.topview.servlet;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"><span class="keyword">import</span> java.util.HashMap;</div><div class="line"><span class="keyword">import</span> java.util.Map;</div><div class="line"></div><div class="line"><span class="keyword">import</span> javax.servlet.ServletException;</div><div class="line"><span class="keyword">import</span> javax.servlet.http.HttpServlet;</div><div class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</div><div class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.topview.dao.UserDao;</div><div class="line"><span class="keyword">import</span> com.topview.po.User;</div><div class="line"><span class="keyword">import</span> com.topview.util.Wordutil;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 生成word控制层</span></div><div class="line"><span class="comment"> * <span class="doctag">@author</span> Zhangweifan&lt;373561032@qq.com&gt;</span></div><div class="line"><span class="comment"> * <span class="doctag">@Date</span> 2016年3月13日 下午2:28:04</span></div><div class="line"><span class="comment"> * <span class="doctag">@version</span> V1.0</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WordServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> UserDao userDao;</div><div class="line">	<span class="comment">// 文件路径</span></div><div class="line">	<span class="keyword">private</span> String filePath;</div><div class="line">	<span class="comment">// 文件唯一名</span></div><div class="line">	<span class="keyword">private</span> String fileName;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span></span></div><div class="line"><span class="function">			<span class="keyword">throws</span> ServletException, IOException </span>&#123;</div><div class="line">		resp.getWriter().write(<span class="string">"请通过表单页面来提交"</span>);</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span></span></div><div class="line"><span class="function">			<span class="keyword">throws</span> ServletException, IOException </span>&#123;</div><div class="line">		req.setCharacterEncoding(<span class="string">"UTF-8"</span>);</div><div class="line">		resp.setContentType(<span class="string">"text/html;charset=UTF-8"</span>);</div><div class="line"></div><div class="line">		<span class="keyword">int</span> id = Integer.parseInt(req.getParameter(<span class="string">"id"</span>));</div><div class="line">		userDao = <span class="keyword">new</span> UserDao();</div><div class="line">		User user = userDao.getUser(id);</div><div class="line">		<span class="comment">// 检查用户是否存在</span></div><div class="line">		<span class="keyword">if</span> (user == <span class="keyword">null</span>) &#123;</div><div class="line">			resp.getWriter().write(<span class="string">"该用户不存在，导出失败"</span>);</div><div class="line">			<span class="keyword">return</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="comment">// 组装导出所需数据</span></div><div class="line">		Map&lt;String, Object&gt; dataMap = <span class="keyword">new</span> HashMap&lt;String, Object&gt;();</div><div class="line">		<span class="comment">// 组装数据</span></div><div class="line">		dataMap.put(<span class="string">"name"</span>, user.getName());</div><div class="line">		dataMap.put(<span class="string">"sex"</span>, user.getSex());</div><div class="line">		dataMap.put(<span class="string">"dorm"</span>, user.getDorm());</div><div class="line">		dataMap.put(<span class="string">"job"</span>, user.getJob() != <span class="keyword">null</span> ? user.getJob() : <span class="string">"无"</span>);</div><div class="line">		dataMap.put(<span class="string">"clazz"</span>, user.getClazz());</div><div class="line">		dataMap.put(<span class="string">"phone"</span>, user.getPhone());</div><div class="line">		dataMap.put(<span class="string">"qq"</span>, user.getQq() != <span class="keyword">null</span> ? user.getQq() : <span class="string">"无"</span>);</div><div class="line">		dataMap.put(<span class="string">"email"</span>, user.getEmail());</div><div class="line">		dataMap.put(<span class="string">"skill"</span>, user.getSkill() != <span class="keyword">null</span> ? user.getSkill() : <span class="string">"无"</span>);</div><div class="line">		dataMap.put(<span class="string">"direction"</span>, user.getDirection());</div><div class="line">		dataMap.put(<span class="string">"experience"</span>,</div><div class="line">				user.getExperience() != <span class="keyword">null</span> ? user.getExperience() : <span class="string">"无"</span>);</div><div class="line">		dataMap.put(<span class="string">"evaluation"</span>, user.getEvaluation());</div><div class="line">		dataMap.put(<span class="string">"hope"</span>, user.getHope() != <span class="keyword">null</span> ? user.getHope() : <span class="string">"无"</span>);</div><div class="line">		</div><div class="line">		filePath = <span class="string">"E:\\TOPVIEWENROLL"</span>;</div><div class="line">		fileName = id + user.getName() + <span class="string">".doc"</span>;</div><div class="line">		<span class="comment">//生成word文件</span></div><div class="line">		Wordutil.createWord(dataMap, <span class="string">"template.ftl"</span>, filePath, fileName);</div><div class="line">		</div><div class="line">		resp.getWriter().write(<span class="string">"生成word文档成功"</span>);</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>工具类代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.topview.util;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.BufferedWriter;</div><div class="line"><span class="keyword">import</span> java.io.File;</div><div class="line"><span class="keyword">import</span> java.io.FileOutputStream;</div><div class="line"><span class="keyword">import</span> java.io.OutputStreamWriter;</div><div class="line"><span class="keyword">import</span> java.io.Writer;</div><div class="line"><span class="keyword">import</span> java.util.Map;</div><div class="line"></div><div class="line"><span class="keyword">import</span> freemarker.template.Configuration;</div><div class="line"><span class="keyword">import</span> freemarker.template.Template;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * word生成工具</span></div><div class="line"><span class="comment"> * <span class="doctag">@author</span> Zhangweifan&lt;373561032@qq.com&gt;</span></div><div class="line"><span class="comment"> * <span class="doctag">@Date</span> 2016年3月13日 下午2:29:15</span></div><div class="line"><span class="comment"> * <span class="doctag">@version</span> V1.0</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Wordutil</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="meta">@SuppressWarnings</span>(<span class="string">"rawtypes"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">createWord</span><span class="params">(Map dataMap, String templateName, String filePath, String fileName)</span> </span>&#123;</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			<span class="comment">//创建配置实例</span></div><div class="line">			Configuration configuration = <span class="keyword">new</span> Configuration();</div><div class="line">			<span class="comment">//设置编码</span></div><div class="line">			configuration.setDefaultEncoding(<span class="string">"UTF-8"</span>);</div><div class="line">			<span class="comment">//将ftl模板文件放在com.topview.template包下面</span></div><div class="line">			configuration.setClassForTemplateLoading(Wordutil.class, <span class="string">"/com/topview/template/"</span>);</div><div class="line">			<span class="comment">//获取模板</span></div><div class="line">			Template template = configuration.getTemplate(templateName);</div><div class="line">			<span class="comment">//输出文件</span></div><div class="line">			File outfile = <span class="keyword">new</span> File(filePath + File.separator + fileName);</div><div class="line">			<span class="comment">//如果目标文件夹不存在，则创建</span></div><div class="line">			<span class="keyword">if</span>(!outfile.getParentFile().exists()) &#123;</div><div class="line">				outfile.getParentFile().mkdirs();</div><div class="line">			&#125;</div><div class="line">			<span class="comment">//将模板和数据模型合并生成文件</span></div><div class="line">			Writer out = <span class="keyword">new</span> BufferedWriter(<span class="keyword">new</span> OutputStreamWriter(<span class="keyword">new</span> FileOutputStream(outfile), <span class="string">"UTF-8"</span>));</div><div class="line">			<span class="comment">//生成文件</span></div><div class="line">			template.process(dataMap, out);</div><div class="line">			<span class="comment">//关闭流</span></div><div class="line">			out.flush();</div><div class="line">			out.close();</div><div class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">			<span class="comment">// TODO Auto-generated catch block</span></div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>新建一个jsp页面来请求操作<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;%@ page language=<span class="string">"java"</span> contentType=<span class="string">"text/html; charset=UTF-8"</span></div><div class="line">    pageEncoding=<span class="string">"UTF-8"</span>%&gt;</div><div class="line">&lt;!DOCTYPE html PUBLIC <span class="string">"-//W3C//DTD HTML 4.01 Transitional//EN"</span> <span class="string">"http://www.w3.org/TR/html4/loose.dtd"</span>&gt;</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;</div><div class="line">&lt;meta http-equiv=<span class="string">"Content-Type"</span> content=<span class="string">"text/html; charset=UTF-8"</span>&gt;</div><div class="line">&lt;title&gt;Insert title here&lt;/title&gt;</div><div class="line">&lt;/head&gt;</div><div class="line">&lt;body&gt;</div><div class="line"></div><div class="line">	&lt;form action=<span class="string">"WordServlet"</span> method=<span class="string">"post"</span> &gt;</div><div class="line">		&lt;input type=<span class="string">"text"</span> name=<span class="string">"id"</span>&gt;</div><div class="line">		&lt;input type=<span class="string">"submit"</span> name=<span class="string">"submit"</span>&gt;</div><div class="line">	&lt;/form&gt;</div><div class="line">&lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure></p>
+<p>接下来运行项目，即可将数据导出成word文档。<br><img src="https://frankszhang.github.io/images/freemarker/freemarker03.png" alt="word-model02"></p>
+<p>系不系猴方便啊！！！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/freemarker/" rel="tag"># freemarker</a>
+          
+            <a href="/tags/word/" rel="tag"># word</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/20/原型模式/" rel="prev" title="原型模式">
+                原型模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">FranksZhang</p>
+              <p class="site-description motion-element" itemprop="description">每一个不曾起舞的日子，都是对生命的辜负</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#制作模板"><span class="nav-number">2.</span> <span class="nav-text">制作模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实现"><span class="nav-number">3.</span> <span class="nav-text">代码实现</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">FranksZhang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
